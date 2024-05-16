@@ -164,3 +164,11 @@ vrrp_instance VI_1 {
 ```
 
 ```systemctl restart keepalived haproxy```
+
+---
+Sources : 
+[Quentin Queiros](https://example.com/](https://quentinqueiros.wordpress.com/wp-content/uploads/2016/09/redondance-web.pdf ).
+[learnitguide](https://www.learnitguide.net/2021/11/configure-ha-cluster-using-keepalived.html).
+
+---
+Laisse moi une ⭐️
