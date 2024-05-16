@@ -73,7 +73,7 @@ Modification du fichier hosts pour résoudre les noms (IP à modifié en fonctio
 172.16.182.4 srvrpxa2
 ```
 
-Configuration de HAProxy : 
+Configuration de HAProxy (A faire sur les deux serveur): 
 ```nano /etc/haproxy/haproxy.cfg```
 ```
 frontend myweb
@@ -86,5 +86,81 @@ backend web-servers
 mode tcp
 balance roundrobin
 option tcp-check
+# Changer par l'ip de votre serveur web ou votre VRRP
 server vrrpsrvweb 192.168.2.13:80 check fall 3 rise 2
 ```
+
+Configuration de Keepalived : 
+Sur le Premier RPX : 
+```nano /etc/keepalived/keepalived.conf```
+```
+# Define the script used to check if haproxy is still working
+vrrp_script chk_haproxy {
+    script "killall -0 haproxy"
+    interval 2
+    weight 2
+}
+# Configuation for the virtual interface
+vrrp_instance VI_1 {
+# Changer par votre interface
+    interface enp0s8
+# Mettre BACKUP sur les autres
+    state MASTER
+# Mettre 100 sur les autres
+    priority 101        
+    virtual_router_id 51
+    smtp_alert          
+    authentication {
+        auth_type AH
+# Mettre le meme mdp de l'autres côté
+        auth_pass myPassw0rd
+    }
+    # The virtual ip address shared between the two loadbalancers
+    virtual_ipaddress {
+# Changer par la VRRP Souhaité
+192.168.2.100
+    }
+    # Use the script above to check if we should fail over
+    track_script {
+        chk_haproxy
+    }
+}
+```
+
+```systemctl restart keepalived haproxy```
+Sur le Second RPX : 
+```
+# Define the script used to check if haproxy is still working
+vrrp_script chk_haproxy {
+    script "killall -0 haproxy"
+    interval 2
+    weight 2
+}
+# Configuation for the virtual interface
+vrrp_instance VI_1 {
+# Changer par votre interface
+    interface enp0s8
+# Mettre BACKUP sur les autres
+    state BACKUP
+# Mettre 100 sur les autres
+    priority 100      
+    virtual_router_id 51
+    smtp_alert          
+    authentication {
+        auth_type AH
+# Mettre le meme mdp de l'autres côté
+        auth_pass myPassw0rd
+    }
+    # The virtual ip address shared between the two loadbalancers
+    virtual_ipaddress {
+# Changer par la VRRP Souhaité
+192.168.2.100
+    }
+    # Use the script above to check if we should fail over
+    track_script {
+        chk_haproxy
+    }
+}
+```
+
+```systemctl restart keepalived haproxy```
