@@ -30,3 +30,24 @@ vrrp_instance VI_1 {
  172.16.4.108
  }
 ```
+---
+Server Web A2
+```nano /etc/keepalived/keepalived.conf```
+```
+vrrp_instance VI_1 {
+# A modifié avec le nom de votre interface
+ interface eth0
+ state MASTER
+ virtual_router_id 51
+# Priorité 100 pour celui qui répondra en premier et 100 pour l'autre
+ priority 101
+ authentication {
+ auth_type AH
+# Spécifié le mot de passe pour l'authentification (Mot de passe a définir et a mettre sur les deux
+ auth_pass "pass"
+ }
+ virtual_ipaddress {
+# IP virtuelle a spécifié
+ 172.16.4.108
+ }
+```
