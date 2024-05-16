@@ -2,7 +2,8 @@
 
 ## Serveur Web + Reverse Proxy en Cluster
 Schéma : 
-![44d04314-b2c8-47ad-bccf-00cfef687816](https://github.com/antoninpomies/Haute-Dispo/assets/95703047/7e3a654e-35cc-4aba-929e-27787bc228d2)
+
+![44d04314-b2c8-47ad-bccf-00cfef687816](https://github.com/antoninpomies/Haute-Dispo/assets/95703047/7e3a654e-35cc-4aba-929e-27787bc228d2){style="display: block; margin: 0 auto" }
 
 ## Mise en place
 ### Serveur Web
