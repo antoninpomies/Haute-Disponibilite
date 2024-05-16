@@ -9,6 +9,9 @@ Installation des paquets nécéssaires :
 ```apt update && apt install -y apache2 keepalived```
 
 Edition des fichiers de conf : 
+
+Server Web A1
+```nano /etc/keepalived/keepalived.conf```
 ```
 vrrp_instance VI_1 {
 # A modifié avec le nom de votre interface
